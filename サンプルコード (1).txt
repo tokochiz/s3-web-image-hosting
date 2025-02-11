@@ -1,0 +1,59 @@
+//Reactとフック（useEffect, useState）をインポート
+//お作法レベル
+//AWSをインポート　S3から画像取得のため
+import React, { useEffect, useState } from 'react';
+import AWS from 'aws-sdk';
+
+//react関数コンポーネントを定義
+//S3から画像を取得してギャラリーとして表示する機能を持ったReactコンポーネント
+//useEffectで画像URLを取得し、それをuseStateで管理された配列にセットし、その配列を用いて複数の<img>要素をレンダリングする
+function ImageGallery() {
+    //useStateフックを使って、コンポーネントの状態（state）としてimagesを定義
+    const [images, setImages] = useState([]);
+
+    useEffect(() => {
+        //S3にアクセスするためのクライアント (s3) を作成
+        const s3 = new AWS.S3({
+            region: 'us-east-1',
+            endpoint: 'https://s3.us-east-1.amazonaws.com',
+            accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+            secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
+        });
+        
+        // S3バケット名を指定してparamsを定義
+        const params = {
+            Bucket: 'linepicture',
+            Prefix: 'images/', // images/ フォルダを指定
+        };
+        
+        // s3.listObjectsV2を使用してs3オブジェクトをリストで取得する
+        s3.listObjectsV2(params, (err, data) => {
+            //エラーハンドリング
+            if (err) {
+                console.error('Error fetching images from S3:', err, err.stack);
+                return;
+            }
+            // 取得したオブジェクトリスト（data.contents）から署名付きURLのリストを生成
+            const imageUrls = data.Contents.map(item => {
+                return s3.getSignedUrl('getObject', {
+                    Bucket: params.Bucket,
+                    Key: item.Key,
+                    Expires: 60 // URLの有効期限（60秒）
+                });
+            });
+            console.log('Fetched image URLs:', imageUrls); // ここでログ出力
+            setImages(imageUrls);
+        });
+    }, []);
+
+    return (
+        <div>
+            {images.map((url, index) => (
+                <img key={index} src={url} alt={`Image ${index}`} style={{ width: '100%', maxWidth: '400px', margin: '10px' }} />
+            ))}
+        </div>
+    );
+}
+
+// App.jsでインポートできるようにエクスポート
+export default ImageGallery;
