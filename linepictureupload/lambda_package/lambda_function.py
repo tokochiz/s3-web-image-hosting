@@ -58,7 +58,7 @@ def lambda_handler(event, context):
         bucket_name = "linepicture-us-east-1"
         s3.put_object(
             Bucket=bucket_name,
-            Key=f"{message_id}.jpg",
+            Key=f"images/{message_id}.jpg",
             Body=response.content,
             ContentType=content_type  # 画像の Content-Type を設定
         )
