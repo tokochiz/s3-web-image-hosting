@@ -21,7 +21,7 @@ function ImageGallery() {
         
         // S3バケット名を指定してparamsを定義
         const params = {
-            Bucket: 'linepicture',
+            Bucket: 'linepicture-us-east-1',
             Prefix: 'images/', // images/ フォルダを指定
         };
         
