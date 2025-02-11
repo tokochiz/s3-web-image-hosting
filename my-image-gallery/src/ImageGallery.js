@@ -48,7 +48,7 @@ function ImageGallery() {
     return (
         <div>
             {images.map((url, index) => (
-                <img key={index} src={url} alt={`Image ${index}`} style={{ width: '100%', maxWidth: '400px', margin: '10px' }} />
+                <img key={index} src={url} alt={`Image ${index}`} style={{ width: '100%', maxWidth: '500px', margin: '3px' }} />
             ))}
         </div>
     );
