@@ -5,10 +5,13 @@
   "dependencies": {
     "aws-sdk": "^2.1692.0",
     "cra-template": "1.2.0",
+    "cssnano": "^5.0.0",
+    "postcss": "^8.5.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "5.0.1",
-    "web-vitals": "^4.2.4"
+    "react-scripts": "^5.0.1",
+    "web-vitals": "^4.2.4",
+    "yargs-parser": "^21.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -34,5 +37,8 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "http://linepicture-us-east-1.s3-website-us-east-1.amazonaws.com/website"
+  "homepage": "http://linepicture-us-east-1.s3-website-us-east-1.amazonaws.com/website",
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+  }
 }
